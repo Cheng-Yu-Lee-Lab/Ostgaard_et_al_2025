@@ -1,0 +1,63 @@
+---
+title: "RNA-seq Analysis"
+output: html_notebook
+---
+```{r}
+library("DESeq2")
+library("ggplot2")
+library("pheatmap")
+```
+
+```{r}
+fpath = "../analysis_data/bulkRNA/RNA_featureCounts.txt"
+count_table <- read.csv(fpath, skip=1, header=TRUE, sep = '\t')
+```
+
+```{r}
+sample_names = c("Zero_1", "Zero_2", "Zero_3", "Twelve_1","Twelve_2","Twelve_3", "Eighteen_1", "Eighteen_2", "Eighteen_3", "TwentyFour_1", "TwentyFour_2", "TwentyFour_3", "Six_1", "Six_2", "Six_3", "aPKC_1", "aPKC_2", "aPKC_3")
+timepoint = as.factor(c(rep("Zero",3),rep("Twelve",3),rep("Eighteen",3),rep("TwentyFour",3), rep("Six",3), rep("aPKC", 3)))
+coldata = data.frame(row.names = sample_names, timepoint)
+```
+
+```{r}
+counts_formatted = count_table[,7:ncol(count_table)]
+rownames(counts_formatted) = count_table$Geneid
+colnames(counts_formatted) = sample_names
+
+ddsMat = DESeqDataSetFromMatrix(counts_formatted, colData = coldata, design = ~timepoint)
+```
+
+```{r}
+ddsMat$timepoint <- relevel(ddsMat$timepoint, ref = "Zero")
+```
+
+```{r}
+dds <- DESeq(ddsMat)
+```
+```{r}
+vsd <- vst(dds, blind=FALSE)
+```
+
+```{r, fig.width=10, fig.height=3}
+norm_data = assay(vsd) #-rowMeans(assay(vsd))
+merge_reps = data.frame(rowMeans(norm_data[,16:18]))
+merge_reps$Zero = data.frame(rowMeans(norm_data[,1:3]))
+merge_reps$Six = data.frame(rowMeans(norm_data[,13:15]))
+merge_reps$Twelve = data.frame(rowMeans(norm_data[,4:6]))
+merge_reps$Eighteen = data.frame(rowMeans(norm_data[,7:9]))
+merge_reps$TwentyFour = data.frame(rowMeans(norm_data[,10:12]))
+
+colnames(merge_reps) = c("aPKC", "Zero", "Six", "Twelve", "Eighteen", "TwentyFour")
+rownames(merge_reps) = count_table$Geneid
+
+genes_of_interest= c("zld", "fru", "grh", "sqz", "vvl", "tll", "pnt", "Sp1", "btd", "l(1)sc", "erm", "ham", "ase", "D", "opa", "hbn", "ey", "scro", "dap")
+pheatmap(
+  t(merge_reps[genes_of_interest,]),
+  cluster_rows=FALSE,
+  cluster_cols=FALSE,
+  scale = 'column')
+```
+
+
+
+

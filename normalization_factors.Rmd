@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library('edgeR')
+
+ATAC_raw <-  read.table("../ATAC_counts/ATAC_counts.txt", header=TRUE)
+H3K4me1_raw <-  read.table("../CR_counts/H3K4me1.txt", header=TRUE)
+H3K4me3_raw <-  read.table("../CR_counts/H3K4me3.txt", header=TRUE)
+H3K27me3_raw <- read.table("../CR_counts/H3K27me3.txt", header=TRUE)
+H3K27ac_raw <- read.table("../CR_counts/H3K27ac.txt", header=TRUE)
+```
+
+```{r}
+ATAC_counts = ATAC_raw[, 7:15]
+normFactor_ATAC <- calcNormFactors(object = ATAC_counts, method = "TMM")
+LibSize_ATAC <- colSums(ATAC_counts)
+SizeFactors_ATAC <- normFactor_ATAC * LibSize_ATAC / 1000000
+SizeFactors_ATAC.reciprocal <- 1/SizeFactors_ATAC
+SizeFactors_ATAC.reciprocal
+```
+
+```{r}
+H3K4me1_counts = H3K4me1_raw[, 7:8]
+normFactor_H3K4me1 <- calcNormFactors(object = H3K4me1_counts, method = "TMM")
+LibSize_H3K4me1 <- colSums(H3K4me1_counts)
+SizeFactors_H3K4me1 <- normFactor_H3K4me1 * LibSize_H3K4me1 / 1000000
+SizeFactors_H3K4me1.reciprocal <- 1/SizeFactors_H3K4me1
+SizeFactors_H3K4me1.reciprocal
+```
+
+```{r}
+library('edgeR')
+H3K4me3_counts = H3K4me3_raw[, 7:8]
+normFactor_H3K4me3 <- calcNormFactors(object = H3K4me3_counts, method = "TMM")
+LibSize_H3K4me3 <- colSums(H3K4me3_counts)
+SizeFactors_H3K4me3 <- normFactor_H3K4me3 * LibSize_H3K4me3 / 1000000
+SizeFactors_H3K4me3.reciprocal <- 1/SizeFactors_H3K4me3
+SizeFactors_H3K4me3.reciprocal
+```
+
+```{r}
+H3K27me3_counts = H3K27me3_raw[, 7:8]
+normFactor_H3K27me3 <- calcNormFactors(object = H3K27me3_counts, method = "TMM")
+LibSize_H3K27me3 <- colSums(H3K27me3_counts)
+SizeFactors_H3K27me3 <- normFactor_H3K27me3 * LibSize_H3K27me3 / 1000000
+SizeFactors_H3K27me3.reciprocal <- 1/SizeFactors_H3K27me3
+SizeFactors_H3K27me3.reciprocal
+```
+
+```{r}
+H3K27ac_counts = H3K27ac_raw[, 7:8]
+normFactor_H3K27ac <- calcNormFactors(object = H3K27ac_counts, method = "TMM")
+LibSize_H3K27ac <- colSums(H3K27ac_counts)
+SizeFactors_H3K27ac <- normFactor_H3K27ac * LibSize_H3K27ac / 1000000
+SizeFactors_H3K27ac.reciprocal <- 1/SizeFactors_H3K27ac
+SizeFactors_H3K27ac.reciprocal
+```
