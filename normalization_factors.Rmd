@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
 output: html_notebook
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r}
@@ -57,4 +59,66 @@ LibSize_H3K27ac <- colSums(H3K27ac_counts)
 SizeFactors_H3K27ac <- normFactor_H3K27ac * LibSize_H3K27ac / 1000000
 SizeFactors_H3K27ac.reciprocal <- 1/SizeFactors_H3K27ac
 SizeFactors_H3K27ac.reciprocal
+```
+
+```{r}
+ase_raw <-  read.table("../CR_counts/ase.txt", header=TRUE)
+btd_raw <-  read.table("../CR_counts/btd.txt", header=TRUE)
+fruC_raw <- read.table("../CR_counts/fruC.txt", header=TRUE)
+fruCOM_apkc_raw <- read.table("../CR_counts/fruCOM_aPKC.txt", header=TRUE)
+zld_raw <- read.table("../CR_counts/zld.txt", header=TRUE)
+zld_apkc_raw <- read.table("../CR_counts/zld_aPKC.txt", header=TRUE)
+```
+
+```{r}
+ase_counts = ase_raw[, 7:8]
+normFactor_ase <- calcNormFactors(object = ase_counts, method = "TMM")
+LibSize_ase <- colSums(ase_counts)
+SizeFactors_ase <- normFactor_ase * LibSize_ase / 1000000
+SizeFactors_ase.reciprocal <- 1/SizeFactors_ase
+SizeFactors_ase.reciprocal
+```
+
+```{r}
+btd_counts = btd_raw[, 7:8]
+normFactor_btd <- calcNormFactors(object = btd_counts, method = "TMM")
+LibSize_btd <- colSums(btd_counts)
+SizeFactors_btd <- normFactor_btd * LibSize_btd / 1000000
+SizeFactors_btd.reciprocal <- 1/SizeFactors_btd
+SizeFactors_btd.reciprocal
+```
+```{r}
+fruC_counts = fruC_raw[, 7:8]
+normFactor_fruC <- calcNormFactors(object = fruC_counts, method = "TMM")
+LibSize_fruC <- colSums(fruC_counts)
+SizeFactors_fruC <- normFactor_fruC * LibSize_fruC / 1000000
+SizeFactors_fruC.reciprocal <- 1/SizeFactors_fruC
+SizeFactors_fruC.reciprocal
+```
+
+```{r}
+fruCOM_apkc_counts = fruCOM_apkc_raw[, 7:8]
+normFactor_fruCOM_apkc <- calcNormFactors(object = fruCOM_apkc_counts, method = "TMM")
+LibSize_fruCOM_apkc <- colSums(fruCOM_apkc_counts)
+SizeFactors_fruCOM_apkc <- normFactor_fruCOM_apkc * LibSize_fruCOM_apkc / 1000000
+SizeFactors_fruCOM_apkc.reciprocal <- 1/SizeFactors_fruCOM_apkc
+SizeFactors_fruCOM_apkc.reciprocal
+```
+
+```{r}
+zld_counts = zld_raw[, 7:8]
+normFactor_zld <- calcNormFactors(object = zld_counts, method = "TMM")
+LibSize_zld <- colSums(zld_counts)
+SizeFactors_zld <- normFactor_zld * LibSize_zld / 1000000
+SizeFactors_zld.reciprocal <- 1/SizeFactors_zld
+SizeFactors_zld.reciprocal
+```
+
+```{r}
+zld_apkc_counts = zld_apkc_raw[, 7:8]
+normFactor_zld_apkc <- calcNormFactors(object = zld_apkc_counts, method = "TMM")
+LibSize_zld_apkc <- colSums(zld_apkc_counts)
+SizeFactors_zld_apkc <- normFactor_zld_apkc * LibSize_zld_apkc / 1000000
+SizeFactors_zld_apkc.reciprocal <- 1/SizeFactors_zld_apkc
+SizeFactors_zld_apkc.reciprocal
 ```
