@@ -86,3 +86,63 @@ featureCounts -a ../peaks_CR/gopeaks/SAF/H3K4me3_narrow.saf \
 	-p \
 	--countReadPairs \
 	../processed_CR/H3K4me3*/*.bam
+	
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/ase.bed > ../analysis_data/TF_peaks/ase.saf
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/btd.bed > ../analysis_data/TF_peaks/btd.saf
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/fruC-myc.bed > ../analysis_data/TF_peaks/fruC-myc.saf
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/fruCOM_aPKC.bed > ../analysis_data/TF_peaks/fruCOM_aPKC.saf
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/zld.bed > ../analysis_data/TF_peaks/zld.saf
+
+awk 'BEGIN{FS=OFS="\t"; print "GeneID\tChr\tStart\tEnd\tStrand"}{print NR, $1, $2+1, $3, "."}' \
+  ../analysis_data/TF_peaks/zld_aPKC.bed > ../analysis_data/TF_peaks/zld_aPKC.saf
+
+featureCounts -a ../analysis_data/TF_peaks/ase.saf \
+  -o ../CR_counts/ase.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*ase*/*.bam
+
+featureCounts -a ../analysis_data/TF_peaks/btd.saf \
+  -o ../CR_counts/btd.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*btd*/*.bam
+
+featureCounts -a ../analysis_data/TF_peaks/fruC-myc.saf \
+  -o ../CR_counts/fruC.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*FruC_0hr*/*.bam
+
+featureCounts -a ../analysis_data/TF_peaks/fruCOM_aPKC.saf \
+  -o ../CR_counts/fruCOM_aPKC.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*FruCOM_apkc*/*.bam
+
+featureCounts -a ../analysis_data/TF_peaks/zld.saf \
+  -o ../CR_counts/zld.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*Zld_0hr*/*.bam
+
+featureCounts -a ../analysis_data/TF_peaks/zld_aPKC.saf \
+  -o ../CR_counts/zld_aPKC.txt \
+  -F 'SAF' \
+  -p \
+  --countReadPairs \
+  ../processed_CR/*Zld_apkc*/*.bam
