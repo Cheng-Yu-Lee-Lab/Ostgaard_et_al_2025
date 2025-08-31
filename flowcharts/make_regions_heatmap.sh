@@ -140,3 +140,41 @@ bedtools intersect -a "../analysis_data/flowchart_v4/regulatory-tf_t2_INP_open.b
 	-b "../analysis_data/flowchart_v4/regulatory-tf_t1.bed" -wa -v \
 	| bedtools sort -i stdin \
 	| bedtools merge -i stdin > ../analysis_data/flowchart_v4/T2_lineage.bed
+
+computeMatrix reference-point \
+	-S  "../bigwigs_CR/z-score_R/H3K4me1_apkc.bw"  \
+		 "../bigwigs_CR/z-score_R/H3K27ac_apkc.bw" \
+		 "../bigwigs_CR/z-score_R/H3K27me3_apkc.bw"  \
+	-R ../analysis_data/flowchart_v4/typeII-promoter.bed \
+	--referencePoint center \
+	-a 1000 -b 1000 \
+	-out ../analysis_data/flowchart_v4/histones_nongrouped.gz \
+	-p max
+
+plotHeatmap \
+-m ../analysis_data/flowchart_v4/histones_nongrouped.gz \
+-out ../analysis_data/flowchart_v4/heatmap_kmeans.png \
+--kmeans 3 \
+--outFileSortedRegions ../analysis_data/flowchart_v4/kmeans3_histones.bed
+
+#Rename bedfiles from kmeans=3 
+
+computeMatrix reference-point \
+-S  "../bigwigs_CR/z-score_R/H3K4me1_apkc.bw"  \
+	 "../bigwigs_CR/z-score_R/H3K27me3_apkc.bw" \
+	 "../bigwigs_CR/z-score_R/H3K27ac_apkc.bw"  \
+ -R ../analysis_data/flowchart_v4/active_enhancers.bed \
+    ../analysis_data/flowchart_v4/poised_enhancers.bed \
+    ../analysis_data/flowchart_v4/inactive_enhancers.bed \
+ --referencePoint center \
+ -a 1000 -b 1000 \
+ -out ../analysis_data/flowchart_v4/histones_kmean3.gz \
+ -p max
+
+plotHeatmap \
+ -m ../analysis_data/flowchart_v4/histones_kmean3.gz \
+ -out ../analysis_data/flowchart_v4/heatmap_kmeans_final.png \
+ --dpi 600 \
+ --regionsLabel 'Active' 'Poised' 'Inactive' \
+ --samplesLabel "H3K4me1" "H3K27me3" "H3K27ac" \
+ --xAxisLabel "" 
